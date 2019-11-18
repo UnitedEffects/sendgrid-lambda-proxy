@@ -1,0 +1,46 @@
+service: ${env:NAME, file(./.env/env.${self:provider.env}.json):NAME}
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  stage: ${env:NODE_ENV, file(./.env/env.${self:provider.env}.json):NODE_ENV}
+  env: ${env:SLS_ENV, 'test'}
+  region: us-east-1
+  timeout: 30
+  environment:
+    NODE_ENV: ${env:NODE_ENV, file(./.env/env.${self:provider.env}.json):NODE_ENV}
+    CUSTOM_DOMAIN: ${env:NODE_ENV, file(./.env/env.${self:provider.env}.json):CUSTOM_DOMAIN}
+    SG_API: ${env:PROTOCOL, file(./.env/env.${self:provider.env}.json):SG_API}
+    SG_URL: ${env:PROTOCOL, file(./.env/env.${self:provider.env}.json):SG_URL}
+    SG_VERSION: ${env:PROTOCOL, file(./.env/env.${self:provider.env}.json):SG_VERSION}
+
+package:
+  exclude:
+    - src/**
+    - .env/**
+    - yarn-error.log
+    - yarn.lock
+    - ci/**
+
+plugins:
+ - serverless-domain-manager
+ - serverless-apigw-binary
+
+custom:
+  customDomain:
+    domainName: ${env:SWAGGER, file(./.env/env.${self:provider.env}.json):CUSTOM_DOMAIN}
+    basePath: ''
+    stage: ${self:provider.stage}
+    createRoute53Record: true
+  apigwBinary:
+    types:
+      - 'multipart/form-data'
+      - 'image/jpeg'
+      - 'image/png'
+
+functions:
+  app:
+    handler: dist/index.handler
+    events:
+      - http: ANY /
+      - http: 'ANY {proxy+}'
