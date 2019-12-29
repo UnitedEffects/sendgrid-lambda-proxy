@@ -8,7 +8,7 @@ Used to proxy SendGrid API request.
 * Change values for .env/env.qa.json, .env/env.dev.json, and .env/env.production.json as required for your proxy
 * yarn
 * yarn build
-* If you want to try it out locally, in src/index.js uncomment line 55 and comment line 56 (remember to undo this before deploy to lambda)
+* If you want to try it out locally, in src/index.js uncomment line 55 and comment line 56 (remember to undo this before deployment to aws)
 * yarn start
 
 ## Deploying
