@@ -1,6 +1,6 @@
 {
   "name": "sendgrid-lambda-proxy",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "basic proxy for sendgrid using lambda",
   "main": "dist/index.js",
   "author": "bmotlagh@unitedeffects.com",
